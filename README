@@ -1,0 +1,60 @@
+Trading Script:
+
+How it works:
+This script pulls historical data from binance.us api, but executes purchases on coinbasepro.
+
+I chose to use the binance.us API since it lets you pull 1000 candle sticks vs the 300 from coinbase.
+
+It pulls the buy signal for both the Bollinger Bands and Simple Moving Average Strategies.
+
+It then pulls the current price for the coin and the current price is pulled from coinbase.
+
+Before buying it will check if the current price is below both of the buy signals. You are able to 
+make it buy just based on either of the strategies by changing the if statment to say 'or' instead of 
+'and' in the if statement for buy condition. There is a comment above that line to let you know.
+
+At the end of the if conditon for buying it sets the sell signal 4% above what it bought at. This 
+does not mean it will sell then. Once the current price is greater than the sell signal it sets a take
+profit level 2% below the current price. So it has a minimum of 2%. Now the take profit level will adjust 
+2% below the current price no matter how high it goes. So if the current price goes 10% higher than when
+you bought, the take profit will be set at 2% below that. If the current price ever drops below or equal
+to the take profit price then it will sell all of the coins the script is running on. I have commented on 
+the code where you can adjust these numbers for the sell signal or take profit numbers.
+
+Once it sells it will calculate the profit level so far it has made in the script and display it on
+each iteration print out. The script also keeps track of how many times it has bought and sold.
+The profit count will not be 100% accurate as I don't consider the trading fees when counting the
+profit.
+
+Lastly there is a stop loss. I set the stop loss to be at 10% below what you bought at. So if the strategy 
+fails and the coin starts dropping it will sell all the coins if the price drops 10% below the bought price.
+
+How to use:
+You will need to coinbasepro account to be able to authenicate and make purchases. You will also need
+a Twilio account to have the script text you of notifications, such as buying, take profit level reached,
+selling, and stop loss. 
+
+You will then need to create a config.py in the same folder that you run the script in. The config.py should be 
+formatted as:
+
+#--------------------------------------------------------------------------------------------------------------
+#CoinbasePro API
+apiKey = ""
+apiSecret = ""
+passphrase = ""
+
+#Twilio API
+account_sid = ""
+auth_token = ""
+
+#Twilio Cell info
+from_ = ""
+to = ""
+
+#--------------------------------------------------------------------------------------------------------------
+
+Then just put the API information inside the quotations.
+
+Once you have the config.py filled in and in the same directory as the trading script you are ready to run it.
+
+
